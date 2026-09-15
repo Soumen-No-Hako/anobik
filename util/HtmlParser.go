@@ -34,5 +34,29 @@ var blockTags = map[string]struct{}{
 }
 
 func parseHtml(resp string) string{
+    var extractedData = ""
+	var n = len(resp)
+	i := 0
+	for i<n {
+		if resp[i] == "<" {
+			isTag, isBlockTag, isDocDescriptor, isClosing, Tagname, i = getTagDetails(*resp, i, n)
+		}
+		
+	}
+}
 
+func getTagDetails(inp *string, index int, inp_length int) (bool, bool, bool, bool, string, int) {
+
+	isTag, isBlockTag, isDocDescriptor, isClosing, isComment := false, false, false, false, false
+	if index+1 < inp_length {
+		if (*inp)[index+1:index+4] == "!--" {
+			isComment = true
+		}
+		else if (*inp)[index+1] == "!" {
+			isDocDescriptor = true
+		}
+		else if (*inp)[index+1] == "/" {
+			isClosing = true
+		}
+	}
 }

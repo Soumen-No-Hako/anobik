@@ -1,19 +1,22 @@
-# oasys
-OASYS - Ollama Agentic System collections. A simple collection of agents, templates, modelfiles. This is to be used as quick reference
+# Anobik
+a small chatgpt, gemini type agentic search engine and assistant
 
 # Purpose
-A collection of quick agent set ups using Ollama
+Using any open weight model, custom tools to get data and info from scratch. No API. (For now, since I am poor)
 
 # Requirement
 | Name | Version | Required? |
 |---|---|---|
 | Ollama || Yes
+| Go || Yes
 | git || No(optional)
 
 # Set-up
 
+Will create an installer later.
+
 1. [Install Ollama](https://docs.ollama.com/quickstart)
-2. clone this repo - git clone https://github.com/Soumen-No-Hako/oasys.git OR git clone git@github.com:Soumen-No-Hako/oasys.git
+2. clone this repo - git clone https://github.com/Soumen-No-Hako/anobik.git OR git clone git@github.com:Soumen-No-Hako/anobik.git
 3. Run/get some open-weights model's gguf from ollama site or huggingface e.g llama3.2, gemma4 etc.
 ```bash
 ollama run {model-name}

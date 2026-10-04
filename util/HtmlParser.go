@@ -40,6 +40,7 @@ func parseHtml(resp string) string{
 	for i<n {
 		if resp[i] == "<" {
 			isTag, isBlockTag, isDocDescriptor, isClosing, Tagname, i = getTagDetails(*resp, i, n)
+			
 		}
 		
 	}
@@ -48,15 +49,60 @@ func parseHtml(resp string) string{
 func getTagDetails(inp *string, index int, inp_length int) (bool, bool, bool, bool, string, int) {
 
 	isTag, isBlockTag, isDocDescriptor, isClosing, isComment := false, false, false, false, false
-	if index+1 < inp_length {
-		if (*inp)[index+1:index+4] == "!--" {
+	if index+3<inp_length{
+	if (*inp)[index+1:index+4] == "!--" {
 			isComment = true
+			getComment
 		}
-		else if (*inp)[index+1] == "!" {
+	}
+	if index+1 < inp_length {
+		if (*inp)[index+1] == "!" {
 			isDocDescriptor = true
 		}
 		else if (*inp)[index+1] == "/" {
 			isClosing = true
+			forwardIndexToEnd
+		}
+		else {
+			tag, index := detectTag(inp, index, inp_length)
+			if blockTags[tag]
 		}
 	}
+}
+
+func detectTag(inp *string, index int, inp_length int) (string, int) {
+	i := index
+	for i < inp_length {
+		if(*inp)[i] == ">" || (*inp)[i]==" " {
+			return detectedTag, i;
+		}
+		detectedTag += (*inp)[i]
+		i++
+	}
+	return "",inp_length;
+}
+
+func forwardIndexToEnd(inp *string, index int, inp_length int) int {
+	// Start at index. keep moving right until you get >
+	for index < inp_length {
+		if(*inp)[index] == ">" {
+			return index
+		}
+		index++
+	}
+	return inp_length
+}
+
+func getContent(inp *string, index int, inp_length int) (string, int) {
+	string data := ""
+	for index < inp_length {
+		if(*inp)[index] == "<" {
+			// Check it's a tag or math expression. if former then stop else continue
+			isTag
+			return data, index
+		}
+		data = data + (*inp)[index]
+		index++
+	}
+	return inp_length
 }

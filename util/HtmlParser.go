@@ -33,20 +33,21 @@ var blockTags = map[string]struct{}{
 	"li": {}, "blockquote": {}, "pre": {}, "tr": {}, "br": {}, "hr": {},
 }
 
-func parseHtml(resp string) string{
+func parseHtml(resp *string) string{
     var extractedData = ""
-	var n = len(resp)
+	var n = len((*resp))
 	i := 0
 	for i<n {
-		if resp[i] == "<" {
-			isTag, isBlockTag, isDocDescriptor, isClosing, Tagname, i = getTagDetails(*resp, i, n)
-			
+		if (*resp)[i] == "<" {
+			Tagname, i, isTagComment, isTagClosing, isTagDocDescriptor := getTagDetails(*resp, i, n)
 		}
-		
+		extractedData = extractedData + (*resp)[i] //possible conditions can be added
+		i++
 	}
+	return extractedData
 }
 
-func getTagDetails(inp *string, index int, inp_length int) (bool, bool, bool, bool, string, int) {
+func getTagDetails(inp *string, index int, inp_length int) (string, int, bool, bool, bool) {
 
 	isTag, isBlockTag, isDocDescriptor, isClosing, isComment := false, false, false, false, false
 	if index+3<inp_length{
@@ -61,13 +62,16 @@ func getTagDetails(inp *string, index int, inp_length int) (bool, bool, bool, bo
 		}
 		else if (*inp)[index+1] == "/" {
 			isClosing = true
-			forwardIndexToEnd
+			ForwardIndexToEnd
 		}
 		else {
 			tag, index := detectTag(inp, index, inp_length)
-			if blockTags[tag]
+			if (*inp)[index] == " " {
+				index = ForwardIndexToEnd(inp, index, inp_length)
+			}
 		}
 	}
+	return tag, index, isComment, isClosing, isDocDescriptor
 }
 
 func detectTag(inp *string, index int, inp_length int) (string, int) {
@@ -82,11 +86,11 @@ func detectTag(inp *string, index int, inp_length int) (string, int) {
 	return "",inp_length;
 }
 
-func forwardIndexToEnd(inp *string, index int, inp_length int) int {
+func ForwardIndexToEnd(inp *string, index int, inp_length int) int {
 	// Start at index. keep moving right until you get >
 	for index < inp_length {
 		if(*inp)[index] == ">" {
-			return index
+			return index+1
 		}
 		index++
 	}

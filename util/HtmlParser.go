@@ -1,5 +1,6 @@
 package anobikUtil
 
+/*
 var htmlTags = map[string]struct{}{
 	"a": {}, "abbr": {}, "address": {}, "area": {}, "article": {}, "aside": {},
 	"audio": {}, "b": {}, "base": {}, "bdi": {}, "bdo": {}, "blockquote": {},
@@ -25,87 +26,83 @@ var htmlTags = map[string]struct{}{
 var ignoredContainers = map[string]struct{}{
 	"script": {}, "style": {}, "noscript": {}, "header": {}, "footer": {}, "nav": {},
 }
+*/
 
 // Elements that break content flow into discrete structural blocks
 var blockTags = map[string]struct{}{
+	"a":{}, "span":{}, "b":{}, "i":{}, "time":{}, "button":{}, "address":{},
 	"p": {}, "div": {}, "article": {}, "section": {}, "main": {},
 	"h1": {}, "h2": {}, "h3": {}, "h4": {}, "h5": {}, "h6": {},
 	"li": {}, "blockquote": {}, "pre": {}, "tr": {}, "br": {}, "hr": {},
 }
 
-func parseHtml(resp *string) string{
-    var extractedData = ""
-	var n = len((*resp))
+func ParseHtml(resp *string) string{
+    var extractedData string
+	var finalData string 
+	var n = len(*resp)
 	i := 0
+	var Tagname string
 	for i<n {
-		if (*resp)[i] == "<" {
-			Tagname, i, isTagComment, isTagClosing, isTagDocDescriptor := getTagDetails(*resp, i, n)
+		if (*resp)[i] == '<' {
+			if len(extractedData) > 0 {
+			finalData += extractedData + "\n"
+			}
+			extractedData = ""
+			Tagname, i = GetTagDetails(resp, i, n)
 		}
-		extractedData = extractedData + (*resp)[i] //possible conditions can be added
+		if _, ok := blockTags[Tagname]; ok {
+		extractedData = extractedData + string((*resp)[i]) //possible conditions can be added
+		}
 		i++
 	}
-	return extractedData
+	if len(extractedData) > 0 {
+			finalData += extractedData + "\n"
+	}
+	return finalData
 }
 
-func getTagDetails(inp *string, index int, inp_length int) (string, int, bool, bool, bool) {
+func GetTagDetails(inp *string, index int, inp_length int) (string, int) {
 
-	isTag, isBlockTag, isDocDescriptor, isClosing, isComment := false, false, false, false, false
-	if index+3<inp_length{
-	if (*inp)[index+1:index+4] == "!--" {
-			isComment = true
-			getComment
-		}
-	}
+	//isDocDescriptor, isClosing, isComment := false, false, false
+	// if index+3<inp_length{
+	// if (*inp)[index+1:index+4] == "!--" {
+			// isComment = true
+			// getComment
+		// }
+	// }
+	var tag string
 	if index+1 < inp_length {
-		if (*inp)[index+1] == "!" {
-			isDocDescriptor = true
-		}
-		else if (*inp)[index+1] == "/" {
-			isClosing = true
-			ForwardIndexToEnd
-		}
-		else {
-			tag, index := detectTag(inp, index, inp_length)
-			if (*inp)[index] == " " {
+		if (*inp)[index+1] == '/' {
+			index = ForwardIndexToEnd(inp, index, inp_length)
+		} else {
+			tag, index = DetectTag(inp, index+1, inp_length)
+			if (*inp)[index] == ' ' || (*inp)[index] == '>' {
 				index = ForwardIndexToEnd(inp, index, inp_length)
 			}
 		}
 	}
-	return tag, index, isComment, isClosing, isDocDescriptor
+	return tag, index
 }
 
-func detectTag(inp *string, index int, inp_length int) (string, int) {
+func DetectTag(inp *string, index int, inp_length int) (string, int) {
+	var detectedTag string
 	i := index
 	for i < inp_length {
-		if(*inp)[i] == ">" || (*inp)[i]==" " {
+		if(*inp)[i] == '>' || (*inp)[i]==' ' {
 			return detectedTag, i;
 		}
-		detectedTag += (*inp)[i]
+		detectedTag += string((*inp)[i])
 		i++
 	}
-	return "",inp_length;
+	return "",i;
 }
 
 func ForwardIndexToEnd(inp *string, index int, inp_length int) int {
 	// Start at index. keep moving right until you get >
 	for index < inp_length {
-		if(*inp)[index] == ">" {
+		if(*inp)[index] == '>' {
 			return index+1
 		}
-		index++
-	}
-	return inp_length
-}
-
-func getContent(inp *string, index int, inp_length int) (string, int) {
-	string data := ""
-	for index < inp_length {
-		if(*inp)[index] == "<" {
-			// Check it's a tag or math expression. if former then stop else continue
-			isTag
-			return data, index
-		}
-		data = data + (*inp)[index]
 		index++
 	}
 	return inp_length

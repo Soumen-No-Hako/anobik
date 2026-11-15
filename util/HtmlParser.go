@@ -1,5 +1,21 @@
 package anobikUtil
 
+import (
+	"anobik/model/parser"
+	"strings"
+	"fmt"
+	"log"
+)
+
+// var htmlEscaper = strings.NewReplacer(
+	// `&`, "&amp;",
+	// `'`, "&#39;", // "&#39;" is shorter than "&apos;" and apos was not in HTML until HTML5.
+	// `<`, "&lt;",
+	// `>`, "&gt;",
+	// `"`, "&#34;", // "&#34;" is shorter than "&quot;".
+// )
+
+
 /*
 var htmlTags = map[string]struct{}{
 	"a": {}, "abbr": {}, "address": {}, "area": {}, "article": {}, "aside": {},
@@ -27,6 +43,12 @@ var ignoredContainers = map[string]struct{}{
 	"script": {}, "style": {}, "noscript": {}, "header": {}, "footer": {}, "nav": {},
 }
 */
+// Flags for operations and navigation
+
+var inTag = false
+var inQuote = false
+var DataExtractorActive = true
+var ext_text_buff string; // Buffer for extracted text to insert in different logic sections
 
 // Elements that break content flow into discrete structural blocks
 var blockTags = map[string]struct{}{
@@ -36,31 +58,155 @@ var blockTags = map[string]struct{}{
 	"li": {}, "blockquote": {}, "pre": {}, "tr": {}, "br": {}, "hr": {},
 }
 
+var FormInputTags = map[string]struct{}{
+	"button":{},
+	"datalist":{},
+	"fieldset":{},
+	"form":{},
+	"input":{},
+	"label":{},
+	"legend":{},
+	"optgroup":{},
+	"option":{},
+	"output":{},
+	"select":{},
+	"textarea":{},
+}
+
+var VoidTags = map[string] struct{}{
+	// "!DOCTYPE":{},
+	"area":{},
+	"base":{},
+	"basefont":{},
+	"bgsound":{},
+	"br":{},
+	"col":{},
+	"command":{},
+	"embed":{},
+	"frame":{},
+	"hr":{},
+	"img":{},
+	"input":{},
+	"isindex":{},
+	"keygen":{},
+	"link":{},
+	"meta":{},
+	"nextid":{},
+	"param":{},
+	"plaintext":{},
+	"source":{},
+	"track":{},
+	"wbr":{},
+}
+
+var SkipTags = map[string] struct{}{
+	"style":{},
+	"script":{},
+}
+// TODO: need logic to skip complete Script blocks
+
 func ParseHtml(resp *string) string{
     var extractedData string
 	var finalData string 
 	var n = len(*resp)
+	var domStack = parser.NewHtmlDOMStack()
+	domStack.Top = &parser.HtmlNode{}
+	domStack.Size = 0
+	domStack.Top.ChildNodes = new([]parser.HtmlNode)
+	// var domTree = parser.NewHtmlDomTreeNode()
+	var domTreeRoot *parser.HtmlNode
+	
 	i := 0
 	var Tagname string
+	var node parser.HtmlNode
+	
+	for i<n {
+		var currentRune = (*resp)[i]
+		i++
+		if currentRune == '<' && !inQuote {
+			node = parser.HtmlNode{}
+			// Need some validations for skip tags
+			if !inTag {
+				node.Txt = ext_text_buff
+				ext_text_buff = ""
+			}
+			inTag = !inTag
+		} else if currentRune == '>' && !inQuote {
+			if inTag {
+				// Split by ' '.
+				// determine tag
+				// push to stack if non-closing. else add ext_text_buff data to stackNode and pop
+				Tagname, isClosing, isVoidTag := ExtractTagDetails(ext_text_buff)
+				inTag = !inTag
+				if !isVoidTag {
+				if isClosing {
+					log.Printf("popping current head {%s} and detected tagname={%s}", domStack.Top.Tagname, Tagname)
+					domStack.Pop()
+				} else {
+					node.Tagname = Tagname
+					node.Txt = ext_text_buff
+					log.Printf("current head {%s}", domStack.Top.Tagname)
+					if domStack.Size>0 {
+					if domStack.Top.ChildNodes == nil {
+						domStack.Top.ChildNodes = new([]parser.HtmlNode)
+					}
+					*domStack.Top.ChildNodes = append(*domStack.Top.ChildNodes, node)
+					//log.Printf("[INFO] %s's child node is - %s", domStack.Top.Tagname,domStack.Top.ChildNodes)
+					}
+					domStack.Push(&node)
+					if domTreeRoot == nil {
+						domTreeRoot = domStack.Top
+					}
+				}
+				}
+			}
+		} else {
+			if currentRune == '"' {
+				inQuote = !inQuote
+			}
+			ext_text_buff += string(currentRune)
+		}
+	}
+	fmt.Printf("Dom Tree is - %s",parser.PrintDomTreeSchema(domTreeRoot,0))
+	
 	for i<n {
 		if (*resp)[i] == '<' {
+		/*
+		* Go until '>'; make sure > is not in a quote;
+		* Do split by '<singleblankSpace>. First cut is the tag.
+		* Insert tag in stack.
+		* start getting content again.
+		* 
+		* Again if < comes but this time its closing tag, then pop
+		* prefer using a single linear iterator to split single space and quote detection
+		*/
 			if len(extractedData) > 0 {
 			finalData += extractedData + "\n"
 			}
 			extractedData = ""
 			Tagname, i = GetTagDetails(resp, i, n)
 		}
+		// if script skip entirely
+		// absolutely go till </script>
 		if _, ok := blockTags[Tagname]; ok {
 		extractedData = extractedData + string((*resp)[i]) //possible conditions can be added
 		}
 		i++
 	}
-	if len(extractedData) > 0 {
+	if len(strings.TrimSpace(extractedData)) > 0 {
 			finalData += extractedData + "\n"
 	}
 	return finalData
 }
 
+func ExtractTagDetails (inp string) (string, bool, bool) {
+	tmpList := strings.Split(inp," ")
+	_, ok := VoidTags[tmpList[0]]
+	if strings.Contains(tmpList[0], "/") {
+		return tmpList[0], true, ok
+	}
+	return tmpList[0], false, ok
+}
 func GetTagDetails(inp *string, index int, inp_length int) (string, int) {
 
 	//isDocDescriptor, isClosing, isComment := false, false, false

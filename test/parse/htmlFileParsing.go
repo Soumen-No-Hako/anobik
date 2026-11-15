@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	htmlByteData, err := os.ReadFile("configs/test/htmlTestData.html")
+	htmlByteData, err := os.ReadFile("/home/soumen/Agents/anobik/configs/test/htmlTestData.html")
 	if err != nil {
     log.Fatal(err)
 	}

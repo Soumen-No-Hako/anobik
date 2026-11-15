@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <!-- ===== HEAD-RELATED TAGS ===== -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sample page containing many HTML tags">
+  <meta name="keywords" content="html, tags, sample, go, parsing">
+  <meta name="author" content="Sample Author">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#336699">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta property="og:title" content="All Tags Sample">
+  <meta property="og:type" content="website">
+  <title>All Tags Sample Page</title>
+  <link rel="canonical" href="https://example.com/all-tags.html">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Crect width='10' height='10' fill='%23336699'/%3E%3C/svg%3E">
+  <!-- External stylesheet reference (file not included; shown for syntax) -->
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <style>
+    :root { --main: #336699; --bg: #f5f5f5; --text: #222; }
+    body { font-family: Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); line-height: 1.5; }
+    header, footer { background: var(--main); color: #fff; padding: 1rem 2rem; }
+    nav a { color: #fff; margin-right: 1rem; }
+    main { display: flex; gap: 1rem; padding: 1rem 2rem; }
+    article { flex: 3; }
+    aside { flex: 1; background: #e0e0e0; padding: 1rem; }
+    section { background: #fff; margin-bottom: 1rem; padding: 1rem; border: 1px solid #ccc; }
+    table, th, td { border: 1px solid #888; border-collapse: collapse; padding: 4px 8px; }
+    pre, code, kbd, samp { background: #eee; font-family: monospace; }
+    blockquote { border-left: 4px solid var(--main); margin-left: 0; padding-left: 1rem; }
+    canvas { border: 1px solid #000; }
+  </style>
+  <script>
+    // Inline script in head
+    document.addEventListener("DOMContentLoaded", function () {
+      var c = document.getElementById("cv");
+      if (c && c.getContext) {
+        var ctx = c.getContext("2d");
+        ctx.fillStyle = "#336699";
+        ctx.fillRect(10, 10, 100, 50);
+      }
+      document.getElementById("clickBtn").addEventListener("click", function () {
+        alert("Button clicked");
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <noscript>JavaScript is disabled in this browser.</noscript>
+
+  <!-- ===== SECTIONING / LAYOUT BLOCK TAGS ===== -->
+  <header>
+    <h1>All Tags Sample Page</h1>
+    <p>Header element containing a title, a paragraph, and navigation.</p>
+    <nav aria-label="Main navigation">
+      <a href="#text">Text</a>
+      <a href="#lists">Lists</a>
+      <a href="#table">Table</a>
+      <a href="#forms">Forms</a>
+      <a href="#media">Media</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <header>
+        <h2>Article Title</h2>
+        <p>Published <time datetime="2026-10-20">20 October 2026</time> by <address style="display:inline">Sample Author</address></p>
+      </header>
+
+      <!-- ===== TEXT BLOCK AND INLINE TAGS ===== -->
+      <section id="text">
+        <h2>Text Elements</h2>
+        <h3>Heading level 3</h3>
+        <h4>Heading level 4</h4>
+        <h5>Heading level 5</h5>
+        <h6>Heading level 6</h6>
+
+        <p>
+          Inline tags: <a href="https://example.com" target="_blank" rel="noopener">link</a>,
+          <span class="plain">span</span>, <strong>strong</strong>, <b>bold</b>,
+          <em>emphasis</em>, <i>italic</i>, <u>underline</u>, <s>strikethrough</s>,
+          <mark>mark</mark>, <small>small</small>, H<sub>2</sub>O, x<sup>2</sup>,
+          <del>deleted</del>, <ins>inserted</ins>.
+        </p>
+
+        <p>
+          Technical inline tags: <code>fmt.Println()</code>, <kbd>Ctrl</kbd>+<kbd>C</kbd>,
+          <samp>output text</samp>, <var>x</var> = 5,
+          <abbr title="HyperText Markup Language">HTML</abbr>,
+          <dfn>definition term</dfn>, <cite>Cited Work</cite>,
+          <q>short inline quote</q>, <data value="42">forty-two</data>,
+          <bdi>bidirectional isolate</bdi>, <bdo dir="rtl">reversed text</bdo>.
+        </p>
+
+        <p>
+          Line break after this<br>
+          and a word-break opportunity: super<wbr>cali<wbr>fragilistic.
+        </p>
+
+        <p>
+          Ruby annotation:
+          <ruby>漢<rp>(</rp><rt>kan</rt><rp>)</rp>字<rp>(</rp><rt>ji</rt><rp>)</rp></ruby>
+        </p>
+
+        <blockquote cite="https://example.com/source">
+          Block quotation element with a cite attribute.
+        </blockquote>
+
+        <pre>
+Preformatted text
+    keeps   spacing
+and line breaks.
+        </pre>
+
+        <hr>
+
+        <div>Generic block container (div).</div>
+      </section>
+
+      <!-- ===== LISTS ===== -->
+      <section id="lists">
+        <h2>Lists</h2>
+
+        <h3>Unordered</h3>
+        <ul>
+          <li>Item one</li>
+          <li>Item two
+            <ul>
+              <li>Nested item</li>
+            </ul>
+          </li>
+        </ul>
+
+        <h3>Ordered</h3>
+        <ol start="1" type="1">
+          <li>First</li>
+          <li>Second</li>
+          <li>Third</li>
+        </ol>
+
+        <h3>Description list</h3>
+        <dl>
+          <dt>Go</dt>
+          <dd>Compiled language with garbage collection.</dd>
+          <dt>HTML</dt>
+          <dd>Markup language for documents.</dd>
+        </dl>
+
+        <h3>Menu</h3>
+        <menu>
+          <li><button type="button">Menu action 1</button></li>
+          <li><button type="button">Menu action 2</button></li>
+        </menu>
+      </section>
+
+      <!-- ===== TABLE ===== -->
+      <section id="table">
+        <h2>Table</h2>
+        <table>
+          <caption>Language comparison</caption>
+          <colgroup>
+            <col>
+            <col span="2" style="background:#f0f8ff">
+          </colgroup>
+          <thead>
+            <tr>
+              <th scope="col">Language</th>
+              <th scope="col">Memory</th>
+              <th scope="col">Typing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Go</td>
+              <td>Garbage collected</td>
+              <td>Static</td>
+            </tr>
+            <tr>
+              <td>C</td>
+              <td>Manual</td>
+              <td>Static</td>
+            </tr>
+            <tr>
+              <td colspan="3">Cell spanning three columns</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3">Table footer</td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <!-- ===== FORMS ===== -->
+      <section id="forms">
+        <h2>Form Elements</h2>
+        <form action="/submit" method="post" autocomplete="on">
+          <fieldset>
+            <legend>Personal data</legend>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Full name" required><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br>
+
+            <label for="pw">Password:</label>
+            <input type="password" id="pw" name="pw" minlength="8"><br>
+
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" min="0" max="120"><br>
+
+            <label for="dob">Date of birth:</label>
+            <input type="date" id="dob" name="dob"><br>
+
+            <label for="color">Color:</label>
+            <input type="color" id="color" name="color" value="#336699"><br>
+
+            <label for="range">Range:</label>
+            <input type="range" id="range" name="range" min="0" max="10"><br>
+
+            <label for="site">Website:</label>
+            <input type="url" id="site" name="site"><br>
+
+            <label for="file">File:</label>
+            <input type="file" id="file" name="file"><br>
+
+            <input type="hidden" name="token" value="abc123">
+          </fieldset>
+
+          <fieldset>
+            <legend>Choices</legend>
+
+            <input type="checkbox" id="c1" name="c1" checked>
+            <label for="c1">Checkbox</label><br>
+
+            <input type="radio" id="r1" name="r" value="a" checked>
+            <label for="r1">Radio A</label>
+            <input type="radio" id="r2" name="r" value="b">
+            <label for="r2">Radio B</label><br>
+
+            <label for="sel">Select:</label>
+            <select id="sel" name="sel">
+              <optgroup label="Compiled">
+                <option value="go">Go</option>
+                <option value="c">C</option>
+              </optgroup>
+              <optgroup label="Interpreted">
+                <option value="py" selected>Python</option>
+                <option value="js">JavaScript</option>
+              </optgroup>
+            </select><br>
+
+            <label for="dl">Datalist:</label>
+            <input list="langs" id="dl" name="dl">
+            <datalist id="langs">
+              <option value="Go">
+              <option value="Rust">
+              <option value="Java">
+            </datalist><br>
+
+            <label for="msg">Message:</label><br>
+            <textarea id="msg" name="msg" rows="3" cols="40">Default text</textarea>
+          </fieldset>
+
+          <p>
+            Progress: <progress value="60" max="100">60%</progress>
+            Meter: <meter value="0.7" min="0" max="1">70%</meter>
+            Output: <output name="result">0</output>
+          </p>
+
+          <button type="submit">Submit</button>
+          <button type="reset">Reset</button>
+          <button type="button" id="clickBtn">Alert</button>
+          <input type="submit" value="Input submit">
+        </form>
+      </section>
+
+      <!-- ===== INTERACTIVE ===== -->
+      <section>
+        <h2>Interactive Elements</h2>
+        <details open>
+          <summary>Expandable section</summary>
+          <p>Content shown when the details element is open.</p>
+        </details>
+
+        <button type="button" onclick="document.getElementById('dlg').showModal()">Open dialog</button>
+        <dialog id="dlg">
+          <p>Dialog element content.</p>
+          <form method="dialog"><button>Close</button></form>
+        </dialog>
+      </section>
+
+      <!-- ===== MEDIA / EMBEDDED ===== -->
+      <section id="media">
+        <h2>Media and Embedded Content</h2>
+
+        <figure>
+          <img alt="Blue rectangle placeholder" width="120" height="60"
+               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Crect width='120' height='60' fill='%23336699'/%3E%3C/svg%3E">
+          <figcaption>Figure caption for an img element.</figcaption>
+        </figure>
+
+        <picture>
+          <source media="(min-width: 800px)" srcset="large.png">
+          <img alt="Picture element fallback" width="60" height="30"
+               src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='30'%3E%3Crect width='60' height='30' fill='%23993333'/%3E%3C/svg%3E">
+        </picture>
+
+        <p>Inline SVG:</p>
+        <svg width="120" height="60" viewBox="0 0 120 60" role="img" aria-label="Circle and line">
+          <circle cx="30" cy="30" r="20" fill="orange"/>
+          <line x1="60" y1="10" x2="110" y2="50" stroke="black" stroke-width="2"/>
+        </svg>
+
+        <p>Canvas (drawn by script):</p>
+        <canvas id="cv" width="120" height="70">Canvas not supported.</canvas>
+
+        <p>Audio:</p>
+        <audio controls>
+          <source src="sound.mp3" type="audio/mpeg">
+          <source src="sound.ogg" type="audio/ogg">
+          Audio not supported.
+        </audio>
+
+        <p>Video:</p>
+        <video controls width="240" height="120">
+          <source src="clip.mp4" type="video/mp4">
+          <track kind="subtitles" src="subs.vtt" srclang="en" label="English">
+          Video not supported.
+        </video>
+
+        <p>Image map:</p>
+        <img alt="Map target" usemap="#m" width="100" height="50"
+             src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='50'%3E%3Crect width='100' height='50' fill='%23669933'/%3E%3C/svg%3E">
+        <map name="m">
+          <area shape="rect" coords="0,0,50,50" href="#text" alt="Left half">
+          <area shape="rect" coords="50,0,100,50" href="#forms" alt="Right half">
+        </map>
+
+        <p>Iframe:</p>
+        <iframe title="Inline frame" width="240" height="80"
+                srcdoc="<p style='font-family:sans-serif'>Content inside an iframe.</p>"></iframe>
+
+        <p>Object and embed (no source files included):</p>
+        <object data="doc.pdf" type="application/pdf" width="120" height="60">Object fallback text.</object>
+        <embed src="doc.pdf" type="application/pdf" width="120" height="60">
+
+        <template id="tpl">
+          <p>Template content: not rendered until cloned by script.</p>
+        </template>
+      </section>
+    </article>
+
+    <aside>
+      <h2>Aside</h2>
+      <p>Content related to the article, rendered in a side column.</p>
+      <search>
+        <form action="/search" role="search">
+          <input type="search" name="q" placeholder="Search">
+          <button type="submit">Go</button>
+        </form>
+      </search>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Sample Author. Entities: &lt;tag&gt; &amp; &quot;quote&quot; &nbsp; &euro; &hearts;</p>
+    <address>
+      Contact: <a href="mailto:test@example.com">test@example.com</a> |
+      <a href="tel:+10000000000">+1 000 000 0000</a>
+    </address>
+  </footer>
+</body>
+</html>
